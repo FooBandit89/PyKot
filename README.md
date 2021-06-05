@@ -89,7 +89,7 @@ println(example_map) # {1: '1', 2: '2', 3: '3'}
 ```
 
 ## Contributing
-Lowest-lift assistance would be to post kotlin code with no current PyKot method equivalent as an issue and i'll work to include it. 
+Lowest-lift assistance would be to post Kotlin code with no current PyKot method equivalent as an issue and i'll work to include it. Need as many compilable inline "it" examples as possible to improve PyKot mimicry. 
 
 Pull requests to contribute directly. Open an issue if you have large changes in mind so the changes can be discussed. 
 

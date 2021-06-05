@@ -18,7 +18,7 @@
                 instead of: """\\_\\"\"""
 
 ## multiple split delimiters using split()
-    solution:   (1) use regex lib, re.split( delimiter1 | delimiter2, input_string)
+    solutions:  (1) use regex lib, re.split( delimiter1 | delimiter2, input_string)
                 (2) replace() all planned delimiters with a unique tag and split(unique_tag)
                 (3) perform nested splits or sequential splits and aggregate lists
 
@@ -41,9 +41,9 @@
                 }
 
 ## when/when else statements
-    solution:   when (variable) {                       if n == 1:
+    solution:   when (variable) {                       if variable == 1:
                     1 -> {                                  code_if_one
-                        codeIfOne                       elif n == 2:
+                        codeIfOne                       elif variable == 2:
                     }                                       code_if_two
                     2 -> {                              else:
                         codeIfTwo                           code_if_else

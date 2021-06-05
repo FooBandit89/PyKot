@@ -9,13 +9,13 @@
                 (2) type cast Int to String with str() - str(122) + "bottles of beer on the wall."
                 instead of: 122 + "bottles of beer on the wall."
 
-## String interpolation (String Template Expressions)
+## String interpolation (String Template Expressions) using $ syntax
     solution:   Use f-string - f"I am {age} years old."
                 instead of: "I am $age years old."
 
 ## Raw strings
-    solution:   Use Python's raw string syntax instead - r'\\_\\"\' -> \\_\\"\
-                instead of: """\\_\\"\""" -> \\_\\"\
+    solution:   Use Python's raw string syntax instead - r'\\_\\"\'
+                instead of: """\\_\\"\"""
 
 ## multiple split delimiters using split()
     solution:   (1) use regex lib, re.split( delimiter1 | delimiter2, input_string)

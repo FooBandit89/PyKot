@@ -47,7 +47,7 @@ map_of(key, value, key, value)
 map_of((key, value), (key, value))
 ```
 
-## Use Examples
+## Usage
 ```python
 from PyKot import *
 

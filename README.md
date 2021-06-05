@@ -11,7 +11,7 @@ pip install PyKot
 ```
 
 ## How To Wrap Data By Type
-Data must be wrapped prior to using kotlin style methods.
+Data must be wrapped prior to using Kotlin style methods.
 
 String
 ```python

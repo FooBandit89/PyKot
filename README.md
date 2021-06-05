@@ -1,6 +1,8 @@
 # - PyKot - 
 Pykot is a Kotlin style syntax wrapper for Python.
 
+** This project is in its early stages. **
+
 ## Installing PyKot (coming soon)
 Use the package manager [pip](https://pip.pypa.io/en/stable/) to install PyKot.
 
@@ -87,7 +89,9 @@ println(example_map) # {1: '1', 2: '2', 3: '3'}
 ```
 
 ## Contributing
-Pull requests to contribute. Open an issue if you have large changes in mind so the changes can be discussed. 
+lowest-lift assistance would be to post kotlin code with no current PyKot method equivalent as an issue and i'll work to include it. 
+
+Pull requests to contribute directly. Open an issue if you have large changes in mind so the changes can be discussed. 
 
 Tests must be updated appropriately.
 

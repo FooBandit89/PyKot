@@ -8,7 +8,7 @@ LICENSE file in the root directory of this source tree.
 
 import traceback as tb
 from dataclasses import dataclass
-from PyKotTranslate import *
+import re as re
 
 
 class PyKot:
@@ -29,56 +29,56 @@ class PyKot:
 
     # str methods
     def last_index(self):  # lastIndex()
-        if not isinstance(self.variable_type, str):
+        if not type_compliance(self.variable, str):
             raise TypeError("Can only use last_index() on PyKot(string)")
         return len(self.variable) - 1
 
     def drop(self, drop_from_front: int):  # drop(n)
-        if not isinstance(self.variable_type, str):
+        if not type_compliance(self.variable, str):
             raise TypeError("Can only use drop(int) on PyKot(string)")
         return PyKot(self.variable[drop_from_front:], True)
 
     def drop_last(self, drop_from_back: int):  # dropLast(n)
-        if not isinstance(self.variable_type, str):
+        if not type_compliance(self.variable, str):
             raise TypeError("Can only use drop_last(it conditional) on PyKot(string)")
         return PyKot(self.variable[: (len(self.variable) - drop_from_back)], True)
 
     def drop_while(self, condition_lambda):  # dropWhile( it expression )
-        if not isinstance(self.variable, str):
+        if not type_compliance(self.variable, str):
             raise TypeError("Can only use drop_last_while(it conditional) on PyKot(string)")
         while condition_lambda(self.variable[0]):
             self.variable = self.variable[1:]
         return PyKot(self.variable, True)
 
     def drop_last_while(self, condition_lambda):  # dropLastWhile( it expression )
-        if not isinstance(self.variable, str):
+        if not type_compliance(self.variable, str):
             raise TypeError("Can only use drop_last_while(it expression) on PyKot(string)")
         while condition_lambda(self.variable[-1]):
             self.variable = self.variable[:-1]
         return PyKot(self.variable, True)
 
     def length(self):  # length()
-        if not isinstance(self.variable_type, str):
+        if not type_compliance(self.variable, str):
             raise TypeError("Can only use length() on PyKot(string)")
         return len(self.variable)
 
     def first(self):  # first()
-        if not isinstance(self.variable_type, str):
+        if not type_compliance(self.variable, str):
             raise TypeError("Can only use first() on PyKot(string)")
         return PyKot(self.variable[0], True)
 
     def last(self):  # last()
-        if not isinstance(self.variable_type, str):
+        if not type_compliance(self.variable, str):
             raise TypeError("Can only use last() on PyKot(string)")
         return PyKot(self.variable[-1], True)
 
     def trim_margin(self, margin="|"):  # trimMargin(margin)
-        if not isinstance(self.variable_type, str):
+        if not type_compliance(self.variable, str):
             raise TypeError("Can only use trim_margin(str) on PyKot(string)")
         return PyKot(self.variable[(self.variable.find(margin) + len(margin)):], True)
 
     def compare_to(self, comparison: str, ignorecase=False):  # compareTo(String, ignorecase=False)
-        if not isinstance(self.variable_type, str):
+        if not type_compliance(self.variable, str):
             raise TypeError("Can only use compare_to(str) on PyKot(string)")
         if ignorecase:
             self.variable = self.variable.lower()
@@ -90,16 +90,16 @@ class PyKot:
         return 0 if self.variable == comparison else sort_compare
 
     def sub_string(self, first_index, second_index):  # subString(i, j)
-        if not isinstance(self.variable_type, str):
+        if not type_compliance(self.variable, str):
             raise TypeError("Can only use substring(int, int) on PyKot(string)")
         return PyKot(self.variable[first_index: second_index], True)
 
     def split(self, delimiter=' ', ignorecase=False, regex_split=False):  # split(delimiter) or
         # split(delimiter, ignorecase=True) or split(delimiter.toRegex()) or split(regex(delimiter))
-        if not isinstance(self.variable_type, str):
+        if not type_compliance(self.variable, str):
             raise TypeError("Can only use split(str) on PyKot(string)")
-        if isinstance(delimiter, tuple):
-            delimiter, ignorecase, regex_split, subcall_path = delimiter[0], delimiter[1], delimiter[2], delimiter[3]
+        if type_compliance(delimiter, tuple):
+            delimiter, ignorecase, regex_split = delimiter[0], delimiter[1], delimiter[2]
         if ignorecase:
             delimiter_indexes = [0]
             find, first_index = 0, 0
@@ -129,53 +129,63 @@ class PyKot:
             return re.split(delimiter, self.variable)
         return self.variable.split(delimiter)
 
-    def plus(self, string_or_int):  # plus(String) or plus(Int)
-        if not isinstance(self.variable_type, str):
-            raise TypeError("Can only use plus(str) on PyKot(string)")
-        return PyKot(self.variable + string_or_int, True)
-
     def sub_sequence(self, first_index, second_index):  # subSequence(i, j)
-        if not isinstance(self.variable_type, str):
+        if not type_compliance(self.variable, str):
             raise TypeError("Can only use sub_sequence(int, int) on PyKot(string)")
         return PyKot(self.variable[first_index:second_index], True)
 
     def lines(self):  # lines()
-        if not isinstance(self.variable_type, str):
+        if not type_compliance(self.variable, str):
             raise TypeError("Can only use lines() on PyKot(string)")
         return self.variable.splitlines()
 
     def capitalize(self):  # capitalize()
-        if not isinstance(self.variable_type, str):
+        if not type_compliance(self.variable, str):
             raise TypeError("Can only use capitalize() on PyKot(string)")
         return PyKot(self.variable.capitalize(), True)
 
     def to_regex(self):
+        if not type_compliance(self.variable, str):
+            raise TypeError("Can only use to_regex(str) on PyKot(string)")
         return self.variable, False, True
+
+    def replace(self, old_value: str, new_value: str, ignorecase=False):
+        if not type_compliance(self.variable, str):
+            raise TypeError("Can only use replace(str, str, ignorecase=False) on PyKot(string)")
+        if ignorecase:
+            find_index = self.variable.lower().find(oldvalue.lower())
+            if find_index == -1:
+                return PyKot(self.variable, True)
+            return PyKot(self.variable[:find_index] + new_value + self.variable[(find_index + len(old_value)):], True)
+        return PyKot(self.variable.replace(old_value, new_value), True)
+
+    def ends_with(self, substring):
+        if not type_compliance(self.variable, str):
+            raise TypeError("Can only use ends_with(substring) on Pykot(string)")
+        return True if self.variable[-len(substring)] == substring else False
+
+    # str/int methods
+    def plus(self, string_or_int):  # plus(String) or plus(Int)
+        if not type_compliance(self.variable, str, int):
+            raise TypeError("Can only use plus(string_or_int) on PyKot(string) or PyKot(int)")
+        return PyKot(self.variable + string_or_int, True)
 
     # str/list/mutable_list methods
     def get(self, index):
-        if not isinstance(self.variable_type, str) \
-                and not isinstance(self.variable_type, list) \
-                and not isinstance(self.variable_type, tuple):
+        if not type_compliance(self.variable, str, list, tuple):
             raise TypeError("Can only use get(int) on PyKot(string), PyKot(list), or PyKot(mutable_list)")
         return PyKot(self.variable[index], True)
 
     def any(self, predicate=''):
-        if not isinstance(self.variable_type, str) \
-                and not isinstance(self.variable_type, list) \
-                and not isinstance(self.variable_type, tuple):
+        if not type_compliance(self.variable, str, list, tuple):
             raise TypeError("Can only use any() on PyKot(string), PyKot(list), or PyKot(mutable_list)")
-        if isinstance(self.variable_type, str) and predicate == '':
+        if type_compliance(self.variable, str) and predicate == '':
             return len(self.variable) > 0
         return True if predicate in self.variable else False
 
     # str/int/list/mutable_list methods
     def to_string(self):
-        if not isinstance(self.variable_type, str) \
-                and not isinstance(self.variable_type, int) \
-                and not isinstance(self.variable_type, list) \
-                and not isinstance(self.variable_type, tuple) \
-                and not isinstance(self.variable_type, range):
+        if not type_compliance(self.variable, str, int, list, tuple, range):
             raise TypeError("Can only use to_string() on PyKot(string), PyKot(int), "
                             "PyKot(list), PyKot(mutable_list), or PyKot(range)")
         if isinstance(self.variable, str):
@@ -184,31 +194,28 @@ class PyKot:
 
     # list/mutable_list methods
     def to_list(self):
-        if not isinstance(self.variable_type, list) \
-                and not isinstance(self.variable_type, tuple):
+        if not type_compliance(self.variable, list, tuple):
             raise TypeError("Can only use to_list() on PyKot(list) or PyKot(mutable_list)")
-        if isinstance(self.variable_type, tuple):
+        if type_compliance(self.variable, tuple):
             return self.variable
         return tuple(self.variable)
 
     def to_mutable_list(self):
-        if not isinstance(self.variable_type, list) and not isinstance(self.variable_type, tuple):
+        if not type_compliance(self.variable, list, tuple):
             raise TypeError("Can only use to_mutable_list() on PyKot(list) or PyKot(mutable_list)")
         if isinstance(self.variable_type, tuple):
             return list(self.variable)
         return self.variable
 
     def contains(self, element):
-        if not isinstance(self.variable_type, list) \
-                and not isinstance(self.variable_type, tuple) \
-                and not isinstance(self.variable, dict):
+        if not type_compliance(self.variable, list, tuple, dict):
             raise TypeError("Can only use contains() on PyKot(Int), PyKot(list), PyKot(mutable_list), or PyKot(map)")
         if isinstance(self.variable, dict):
             return element in self.variable.keys()
         return element in self.variable
 
     def find(self, predicate, subcall=""):
-        if not isinstance(self.variable_type, list) and not isinstance(self.variable_type, tuple):
+        if not type_compliance(self.variable, list, tuple):
             raise TypeError("Can only use find() on PyKot(list) or PyKot(mutable_list)")
         if isinstance(predicate, tuple):
             predicate, subcall = predicate[0], predicate[1]
@@ -226,7 +233,7 @@ class PyKot:
         return None
 
     def find_last(self, predicate, subcall=""):
-        if not isinstance(self.variable_type, list) and not isinstance(self.variable_type, tuple):
+        if not type_compliance(self.variable, list, tuple):
             raise TypeError("Can only use find_last() on PyKot(list) or PyKot(mutable_list)")
         if isinstance(predicate, tuple):
             predicate, subcall = predicate[0], predicate[1]
@@ -246,17 +253,25 @@ class PyKot:
             return found_last
         return None
 
+    def with_index(self):  # withIndex()
+        if not type_compliance(self.variable, list, tuple):
+            raise TypeError("Can only use with_index() on PyKot(list) or PyKot(tuple)")
+        new_variable = [(i, e) for i, e in enumerate(self.variable)]
+        if type_compliance(self.variable, list):
+            return PyKot(new_variable, True)
+        return PyKot(tuple(new_variable), True)
+
     # mutable_list methods
     def add(self, element):
-        if not isinstance(self.variable_type, list):
+        if not type_compliance(self.variable, list):
             raise TypeError("Can only use add() on PyKot(MutableList)")
         return PyKot(self.variable.append(element), True)
 
     def add_all(self, *args):
-        if not isinstance(self.variable_type, list):
+        if not type_compliance(self.variable, list):
             raise TypeError("Can only use add_all() on PyKot(MutableList)")
         for arg in args:
-            if isinstance(arg, tuple) or isinstance(arg, list):
+            if type_compliance(arg, tuple, list):
                 self.variable += [x for x in arg]
             else:
                 self.variable.append(arg)
@@ -264,33 +279,27 @@ class PyKot:
 
     # int methods
 
-    # ------------------------------------------------------------------------------------------------------------------
-
-    def with_index(self):  # withIndex()
-        new_variable = [(i, e) for i, e in enumerate(self.variable)]
-        if isinstance(self.variable, list):
-            return PyKot(new_variable, True)
-        elif isinstance(self.variable, tuple):
-            return PyKot(tuple(new_variable), True)
-
+    # map methods
     def keys(self):
+        if not type_compliance(self.variable, dict):
+            raise TypeError("Can only use keys() on PyKot(dict)")
         return self.variable.keys()
 
     def values(self):
+        if not type_compliance(self.variable, dict):
+            raise TypeError("Can only use values() on PyKot(dict)")
         return self.variable.values()
 
-    def replace(self, old_value: str, new_value: str, ignorecase=False):
-        if ignorecase:
-            find_index = self.variable.lower().find(oldvalue.lower())
-            if find_index == -1:
-                return PyKot(self.variable, True)
-            else:
-                return PyKot(self.variable[:find_index] + new_value + self.variable[(find_index + len(old_value)):],
-                             True)
-        return PyKot(self.variable.replace(old_value, new_value), True)
+    # ------------------------------------------------------------------------------------------------------------------
 
-    def filter(self, contains, seq):
-        return PyKot(self.variable.filter(contains, seq), True)
+    def filter(self, contains):
+        if not type_compliance(self.variable, list, tuple, dict):
+            pass
+        if isinstance(contains, type(lambda: 0)):
+            return PyKot(list(filter(contains, self.variable)), True)
+        if type_compliance(self.variable, dict):
+            pass
+        return PyKot(filter(contains, self.variable), True)
 
     def for_each(self):
         pass
@@ -484,36 +493,50 @@ def elvis_operator(not_null_return, alternative_return):
     return return_value
 
 
-# rewrite to use/return lambda
-
 def it():
     return It("it")
 
 
 class It:
+    # functions seen with it syntax
+    # filter
 
     def __init__(self, identity):
         self.identity = identity
 
     def __add__(self, additive):
+        if type_compliance(self.identity, type(lambda: 0)):
+            return lambda x: self.identity(x) + additive
         return lambda x: x + additive
 
     def __lt__(self, comparison):
+        if type_compliance(self.identity, type(lambda: 0)):
+            return lambda x: self.identity(x) < comparison
         return lambda x: x < comparison
 
     def __le__(self, comparison):
+        if type_compliance(self.identity, type(lambda: 0)):
+            return lambda x: self.identity(x) <= comparison
         return lambda x: x <= comparison
 
     def __eq__(self, comparison):
+        if type_compliance(self.identity, type(lambda: 0)):
+            return lambda x: self.identity(x) == comparison
         return lambda x: x == comparison
 
     def __ne__(self, comparison):
+        if type_compliance(self.identity, type(lambda: 0)):
+            return lambda x: self.identity(x) != comparison
         return lambda x: x != comparison
 
     def __gt__(self, comparison):
+        if type_compliance(self.identity, type(lambda: 0)):
+            return lambda x: self.identity(x) > comparison
         return lambda x: x > comparison
 
     def __ge__(self, comparison):
+        if type_compliance(self.identity, type(lambda: 0)):
+            return lambda x: self.identity(x) >= comparison
         return lambda x: x >= comparison
 
     def contains(self, string):
@@ -524,41 +547,15 @@ class It:
         self.identity += f".startsWith('{string}')"
         return string, f"startsWith('{string}')"
 
+    def length(self):
+        return It(lambda x: len(x))
+
     def uppercase_char(self):
         pass
 
     def uppercase(self):
         # research different locales
         pass
-
-
-def provide_index_of_both_predicates(string: str, predicate1: str, predicate2: str):
-    """
-    Determines the index location of predicate1, then the index of predicate2 downstream of predicate1
-    and returns index of predicate1, index of predicate2. returns -1 for any index if predicate isn't found.
-    :param string:
-    :param predicate1:
-    :param predicate2:
-    :return:
-    """
-    start = string.find(predicate1)
-    end = string.find(predicate2, start + len(predicate1))
-    return start, end
-
-
-def replace_first_occurrence_sequentially(string: str, *args: tuple):
-    """
-    String is sequentially modified with replacements passed as tuples (to_replace, replace_with)
-    and returns the produce of these sequential replacements. NOTE: each replacement will operate on first occurrence.
-    :param string:
-    :param args:
-    :return:
-    """
-    return_string = string
-    for arg in args:
-        to_replace, replace_with = arg
-        return_string = return_string.replace(to_replace, replace_with)
-    return return_string
 
 
 def type_compliance(variable, *args):
@@ -575,12 +572,3 @@ def type_compliance(variable, *args):
         else:
             return_list.append(False)
     return True if True in return_list else False
-
-
-def ciu(cidu):
-    """ if cidu is of data type string, return cidu flanked by single quotes if length = 1, else double quotes """
-    if isinstance(cidu, str):
-        if len(cidu) == 1:
-            return "'" + cidu + "'"
-        return '"' + cidu + '"'
-    return cidu

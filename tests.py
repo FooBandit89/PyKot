@@ -142,7 +142,7 @@ def run_tests():
 
     a1 = PyKot((1, 2, 3)).to_list()
     print(test("Tuple.to_list()", a1 == (1, 2, 3)))
-    a2 = PyKot([56e1, 2, 3]).to_list()
+    a2 = PyKot([1, 2, 3]).to_list()
     print(test("List.to_list()", a2 == (1, 2, 3)))
 
     # find
@@ -155,5 +155,12 @@ def run_tests():
     z3 = elvis_operator(variable, "was None")
     print(test("elvis with variable", z3 == 1))
 
+    # list/tuple/dict
+
+    a = PyKot(("one", "two", "three", "four"))
+    print(test("filter(it.length > 3)", a.filter(it().length() > 3).variable == ['three', 'four']))
+
 
 run_tests()
+
+

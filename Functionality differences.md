@@ -2,7 +2,7 @@
 
 ## sub_sequence() and sub_string() are identical due to char data type being non-existent in python.
 
-## Can not concatenate Int data type with String data type in println statements.
+## Can not concatenate Int with String data types using the + operator in println statements.
     solutions:  (1) Use f-string - f"Yes, it's {PyKot(string).length()} characters long."
                 Instead of: "Yes, it's " + (string.length) + " characters long."
                 

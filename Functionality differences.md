@@ -1,7 +1,3 @@
-## Thunks from as_sequence() and sequence() are not maintained. Both as_sequence() and sequence() are both eager.
-
-## sub_sequence() and sub_string() are identical due to char data type being non-existent in python.
-
 ## Can not concatenate Int with String data types using the + operator in println statements.
     solutions:  (1) Use f-string - f"Yes, it's {PyKot(string).length()} characters long."
                 Instead of: "Yes, it's " + (string.length) + " characters long."
@@ -56,3 +52,8 @@
 ## Elvis operator syntactical sugar
     solution:   elvis_operator(first_return, second_return)
                 instead of: first_return ?: second_return
+                
+## Functions that are now eager instead of lazy:
+as_sequence(), sequence(), with_index()
+
+## Functions which act on sequences and strings are identical due to char data type being non-existent in python.

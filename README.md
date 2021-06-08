@@ -1,8 +1,6 @@
 # - PyKot - Alpha v0.04
 Pykot is a Kotlin style syntax wrapper for Python.
 
-** This project is in its early stages. Currently focused on commonly used methods from the standard Kotlin library.**
-
 ## Installing PyKot (coming soon)
 Use the package manager [pip](https://pip.pypa.io/en/stable/) to install PyKot.
 

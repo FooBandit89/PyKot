@@ -23,7 +23,8 @@
                 instead of: mapOf(2 to "two", 3 to "three") 
 
 ## do-while loops (post-test loop)
-    solution:                                           loop = True
+    solution:      INSTEAD OF                                  USE
+                                                        loop = True
                 do {                                    while loop:
                     doCode                                  do_code
                     doCode                                  do_code
@@ -32,12 +33,14 @@
                                                                 loop = False
 
 ## repeat() loops
-    solution:   repeat(n) {                             for i in range(n):
+    solution:     INSTEAD OF                                   USE
+                repeat(n) {                             for i in range(n):
                     repeatedCode                            repeated_code
                 }
 
 ## when/when else statements
-    solution:   when (variable) {                       if variable == 1:
+    solution:      INSTEAD OF                                  USE
+                when (variable) {                       if variable == 1:
                     1 -> {                                  code_if_one
                         codeIfOne                       elif variable == 2:
                     }                                       code_if_two
@@ -52,6 +55,14 @@
 ## Elvis operator syntactical sugar
     solution:   elvis_operator(first_return, second_return)
                 instead of: first_return ?: second_return
+                
+## Apply syntax for Object assignments
+    solution:      INSTEAD OF                                  USE
+                Object.apply {                          Object.apply(
+                name = 'John'                           ('name', 'John')
+                age = 30                                ('age', 30)
+                }                                       )
+
                 
 ## Functions that are now eager instead of lazy:
 as_sequence(), sequence(), with_index()

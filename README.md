@@ -35,6 +35,9 @@ list_of('L', 'i', 's', 't')
 
 Array
 ```python
+import numpy as np
+
+PyKot(np.array('A', 'r', 'r', 'a', 'y'))
 array_of('A', 'r', 'r', 'a', 'y')
 ```
 

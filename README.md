@@ -1,4 +1,4 @@
-# - PyKot - Alpha version 0.04
+# - PyKot - Alpha v0.04
 Pykot is a Kotlin style syntax wrapper for Python.
 
 ** This project is in its early stages. Currently focused on commonly used methods from the standard Kotlin library.**

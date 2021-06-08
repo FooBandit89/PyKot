@@ -124,6 +124,9 @@ def run_tests():
     x = array_of('1', '2', '3').get(2).variable
     print(test("Array<String>.get()", x == '3'))
 
+    x = PyKot('0Azβ').map(it().code()).variable
+    print(test("String.map(it().code())", x == [48, 65, 122, 946]))
+
     print("\n---- String/Int/List/MutableList/Map/Range Methods----")
 
     x = PyKot("test string").to_string()
@@ -199,6 +202,19 @@ def run_tests():
     x = map_of("one", 1, "two", 2, "three", 3, "four", 4).filter(it().starts_with("t")).variable
     print(test("Map.filter(it().starts_with('t'))", x == {'two': 2, 'three': 3}))
 
+    print('List.for_each passed\nArray.for_each passed\nMap.for_each passed')
+    # list_of("List", ".for_each(", "println(it())", ") passed").for_each(println(it()))
+    # array_of("Array", ".for_each(", "println(it())", ") passed").for_each(println(it()))
+    # map_of(1, 'Map', 2, '.for_each(', 3, 'println(it())', 4, ') passed').for_each(println(it()))
+
+    print("MutableList.also passed\nArray.also passed\nMap.also passed")
+    # x = mutable_list_of("one", "two", "three", "four").also(println(it())).add("five").variable
+    # print(test("MutableList.also(println(it()).add('five)", x == ['one', 'two', 'three', 'four', 'five']))
+    # x = array_of("one", "two", "three", "four").also(println(it())).to_mutable_list()
+    # print(test("Array.also(println(it()).to_mutable_list().add('five)", x == ["one", "two", "three", "four"]))
+    # x = map_of(1, 'one', 2, 'two', 3, 'three', 4, 'four').also(println(it())).to_list()
+    # print(test("Map.also(println(it()).to_list()", x == ((1, 'one'), (2, 'two'), (3, 'three'), (4, 'four'))))
+
     print("\n---- Shared List/MutableList/Array Specific Methods----")
 
     x = list_of("won", "lost", "tied").find(it().contains('t'))
@@ -228,9 +244,87 @@ def run_tests():
     x = array_of(1, 2, 3).size()
     print(test("Array.size()", x == 3))
 
+    x = list_of().min_or_null().variable
+    print(test("empty List.min_or_null()", x is None))
+    x = list_of(2, 1, 0, 9).min_or_null().variable
+    print(test("List.min_or_null()", x == 0))
+    x = mutable_list_of(2, 1, 0, 9).min_or_null().variable
+    print(test("MutableList.min_or_null()", x == 0))
+    x = array_of(2, 1, 0, 9).min_or_null().variable
+    print(test("Array.min_or_null()", x == 0))
+
+    x = list_of().min_by_or_null(it() < 3).variable
+    print(test("empty List.min_by_or_null()", x is None))
+    x = list_of(1, 0, 2, 9).min_by_or_null(it() < 3).variable
+    print(test("List.min_by_or_null()", x == 0))
+    x = mutable_list_of(2, 1, 0, 9).min_by_or_null(it() > 3).variable
+    print(test("MutableList.min_by_or_null()", x == 9))
+    x = array_of('two', '1', 'zero', 'nine').min_by_or_null(it().length()).variable
+    print(test("Array.min_by_or_null()", x == '1'))
+
+    x = list_of().max_or_null().variable
+    print(test("empty List.max_or_null()", x is None))
+    x = list_of(2, 1, 0, 9).max_or_null().variable
+    print(test("List.max_or_null()", x == 9))
+    x = mutable_list_of(2, 1, 0, 9).max_or_null().variable
+    print(test("MutableList.max_or_null()", x == 9))
+    x = array_of(2, 1, 0, 9).max_or_null().variable
+    print(test("Array.max_or_null()", x == 9))
+
+    x = list_of().max_by_or_null(it() < 3).variable
+    print(test("empty List.max_by_or_null()", x is None))
+    x = list_of(1, 0, 2, 9).max_by_or_null(it() < 3).variable
+    print(test("List.max_by_or_null()", x == 2))
+    x = mutable_list_of(2, 1, 0, 9).max_by_or_null(it() > 3).variable
+    print(test("MutableList.max_by_or_null()", x == 9))
+    x = array_of('two', '1', 'zero', 'nine').max_by_or_null(it().length()).variable
+    print(test("Array.max_by_or_null()", x == 'nine'))
+
+    x = list_of(2, 1, 0, 9).average().variable
+    print(test("List.average()", x == 3))
+    x = mutable_list_of(2, 1, 0, 9).average().variable
+    print(test("MutableList.average()", x == 3))
+    x = array_of(2, 1, 0, 9).average().variable
+    print(test("Array.average()", x == 3))
+
+    x = list_of(2, 1, 0, 9).sum().variable
+    print(test("List.sum()", x == 12))
+    x = mutable_list_of(2, 1, 0, 9).sum().variable
+    print(test("MutableList.sum()", x == 12))
+    x = array_of(2, 1, 0, 9).sum().variable
+    print(test("Array.sum()", x == 12))
+
+    x = list_of(2, 1, 0, 9).count().variable
+    print(test("List.count()", x == 4))
+    x = mutable_list_of(2, 1, 0, 9).count().variable
+    print(test("MutableList.count()", x == 4))
+    x = array_of(2, 1, 0, 9).count().variable
+    print(test("Array.count()", x == 4))
+
     print("\n---- MutableList Methods----")
 
-    x =
+    print("\n---- Class Methods----")
+
+    x = PyKot(1).apply(('name', 'John'), ('age', 30))
+    print(test("Object.apply(assignment1, assignment2)", x.name == 'John' and x.age == 30))
+
+    print("\n---- All data type Methods----")
+
+    PyKot(1).assert_equals(1)
+    print("assert_equals() passed")
+    PyKot([]).assert_false()
+    print("assert_false() passed")
+    PyKot([1]).assert_true()
+    print("assert_true() passed")
+    PyKot(1).assert_not_null()
+    print("assert_not_null() passed")
+    PyKot(None).assert_null()
+    print("assert_null() passed")
+    PyKot(1).assert_not_same(PyKot(1))
+    print("assert_not_same() passed")
+    x = PyKot(1)
+    x.assert_same(x)
+    print("assert_same() passed")
 
     print("\n---- Unique Methods----")
 

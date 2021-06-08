@@ -11,35 +11,35 @@ pip install PyKot
 ## How To Wrap Data By Type
 Data must be wrapped prior to using Kotlin style methods.
 
-String
+### String
 ```python
 PyKot('Example String')
 ```
 
-Int
+### Int
 ```python
 PyKot(123)
 ```
 
-MutableList
+### MutableList
 ```python
 PyKot(['L', 'i', 's', 't'])
 mutable_list_of('L', 'i', 's', 't')
 ```
 
-List
+### List
 ```python
 PyKot(('L', 'i', 's', 't'))
 list_of('L', 'i', 's', 't')
 ```
 
-Array
+### Array
 ```python
 PyKot(np.array('A', 'r', 'r', 'a', 'y'))
 array_of('A', 'r', 'r', 'a', 'y')
 ```
 
-Map
+### Map
 ```python
 PyKot({dict_key: dict_value})
 map_of(key, value, key, value)

@@ -40,13 +40,13 @@ class PyKot:
 
     def drop_while(self, it_expression):  # dropWhile(it expression)
         raise_type_error_if_merited("drop_while(it expression)", self.variable, str)
-        while it_expression(self.variable[0]):
+        while it_expression.in_line_function(self.variable[0]):
             self.variable = self.variable[1:]
         return PyKot(self.variable, True)
 
     def drop_last_while(self, it_expression):  # dropLastWhile(it expression)
         raise_type_error_if_merited("drop_last_while(it expression)", self.variable, str)
-        while it_expression(self.variable[-1]):
+        while it_expression.in_line_function(self.variable[-1]):
             self.variable = self.variable[:-1]
         return PyKot(self.variable, True)
 
@@ -184,6 +184,7 @@ class PyKot:
             if self.variable:
                 return True
             return False
+        predicate = predicate.in_line_function
         if type_compliance(self.variable, dict):
             return True if len(list(filter(predicate, self.variable.keys()))) > 0 else False
         return True if len(list(filter(predicate, self.variable))) > 0 else False
@@ -214,8 +215,7 @@ class PyKot:
 
     def filter(self, predicate):  # filter(predicate)
         raise_type_error_if_merited("filter(function)", self.variable, list, tuple, dict, type(np.array([])))
-        if isinstance(predicate, type(it())):
-            predicate = predicate.in_line_function
+        predicate = predicate.in_line_function
         if type_compliance(self.variable, dict):
             new_map = {}
             for key in list(filter(predicate, self.variable.keys())):
@@ -223,12 +223,63 @@ class PyKot:
             return PyKot(new_map, True)
         return PyKot(list(filter(predicate, self.variable)), True)
 
+    def for_each(self, *statements):
+        raise_type_error_if_merited("for_each(*statements)", self.variable, list, tuple, type(np.array([])), dict)
+        if type_compliance(self.variable, dict):
+            useful_list = [PyKot(self.variable[x]) for x in self.variable.keys()]
+            for value in useful_list:
+                for statement in statements:
+                    statement(value)
+        else:
+            useful_list = [PyKot(unpack_array(x)) for x in self.variable]
+            for value in useful_list:
+                for statement in statements:
+                    statement(value)
+        return PyKot(self.variable, True)
+
+    def also(self, *statements):
+        raise_type_error_if_merited("also(*statements)", self.variable,
+                                    str, int, range, list, tuple, type(np.array([])), dict)
+        if type_compliance(self.variable, dict):
+            useful_list = [PyKot(self.variable[x]) for x in self.variable.keys()]
+            for value in useful_list:
+                for statement in statements:
+                    statement(value)
+        elif type_compliance(self.variable, range, list, tuple, type(np.array([]))):
+            useful_list = [PyKot(unpack_array(x)) for x in self.variable]
+            for value in useful_list:
+                for statement in statements:
+                    statement(value)
+        elif type_compliance(self.variable, str, int):
+            for statement in statements:
+                statement(self.variable)
+        return PyKot(self.variable, True)
+
+    def let(self, *statements):
+        raise_type_error_if_merited("let(*statements)", self.variable,
+                                    str, int, range, list, tuple, type(np.array([])), dict, type(None))
+        if self.variable is None:
+            return PyKot(self.variable, True)
+        if type_compliance(self.variable, dict):
+            useful_list = [PyKot(self.variable[x]) for x in self.variable.keys()]
+            for value in useful_list:
+                for statement in statements:
+                    statement(value)
+        elif type_compliance(self.variable, range, list, tuple, type(np.array([]))):
+            useful_list = [PyKot(unpack_array(x)) for x in self.variable]
+            for value in useful_list:
+                for statement in statements:
+                    statement(value)
+        elif type_compliance(self.variable, str, int):
+            for statement in statements:
+                statement(self.variable)
+        return PyKot(self.variable, True)
+
     # list/mutable_list/array methods
 
     def find(self, predicate):  # find(predicate)
         raise_type_error_if_merited("find(predicate)", self.variable, list, tuple, type(np.array([])))
-        if isinstance(predicate, type(it())):
-            predicate = predicate.in_line_function
+        predicate = predicate.in_line_function
         found = list(filter(predicate, self.variable))
         if len(found) == 0:
             return None
@@ -236,8 +287,7 @@ class PyKot:
 
     def find_last(self, predicate):  # findLast(predicate)
         raise_type_error_if_merited("find_last(predicate)", self.variable, list, tuple, type(np.array([])))
-        if isinstance(predicate, type(it())):
-            predicate = predicate.in_line_function
+        predicate = predicate.in_line_function
         found = list(filter(predicate, self.variable))
         if len(found) == 0:
             return None
@@ -252,8 +302,7 @@ class PyKot:
 
     def grouping_by(self, predicate):  # groupingBy(it expression)
         raise_type_error_if_merited("grouping_by(predicate)", self.variable, list, tuple, type(np.array([])))
-        if type_compliance(predicate, type(it())):
-            predicate = predicate.in_line_function
+        predicate = predicate.in_line_function
         output_map = {}
         for element in self.variable:
             if predicate(element) in output_map:
@@ -261,6 +310,88 @@ class PyKot:
                 continue
             output_map[predicate(element)] = [element]
         return PyKot(output_map, True)
+
+    def size(self):  # .size
+        raise_type_error_if_merited("size()", self.variable, list, tuple, type(np.array([])))
+        return len(self.variable)
+
+    def min_or_null(self):  # minOrNull()
+        raise_type_error_if_merited("min_or_null()", self.variable, list, tuple, type(np.array([])))
+        if len(self.variable) == 0:
+            return PyKot(None, True)
+        useful_list = [unpack_array(x) for x in self.variable]
+        useful_list.sort()
+        return PyKot(useful_list[0], True)
+
+    def min_by_or_null(self, predicate):
+        raise_type_error_if_merited("min_by_or_null()", self.variable, list, tuple, type(np.array([])))
+        predicate = predicate.in_line_function
+        useful_list = list(filter(predicate, [unpack_array(x) for x in self.variable]))
+        if len(useful_list) == 0:
+            return PyKot(None, True)
+        if len(useful_list) == len(self.variable):
+            useful_list.sort(key=predicate)
+        else:
+            useful_list.sort()
+        return PyKot(useful_list[0], True)
+
+    def max_or_null(self):  # maxOrNull()
+        raise_type_error_if_merited("max_or_null()", self.variable, list, tuple, type(np.array([])))
+        if len(self.variable) == 0:
+            return PyKot(None, True)
+        useful_list = [unpack_array(x) for x in self.variable]
+        useful_list.sort()
+        return PyKot(useful_list[-1], True)
+
+    def max_by_or_null(self, predicate):
+        raise_type_error_if_merited("max_by_or_null()", self.variable, list, tuple, type(np.array([])))
+        predicate = predicate.in_line_function
+        useful_list = list(filter(predicate, [unpack_array(x) for x in self.variable]))
+        if len(useful_list) == 0:
+            return PyKot(None, True)
+        if len(useful_list) == len(self.variable):
+            useful_list.sort(key=predicate)
+        else:
+            useful_list.sort()
+        return PyKot(useful_list[-1], True)
+
+    def average(self):  # average()
+        raise_type_error_if_merited("max_or_null()", self.variable, list, tuple, type(np.array([])))
+        useful_list = [x for x in self.variable]
+        return PyKot(int(sum(useful_list) / len(useful_list)), True)
+
+    def sum(self):  # sum()
+        raise_type_error_if_merited("max_or_null()", self.variable, list, tuple, type(np.array([])))
+        return PyKot(int(sum([x for x in self.variable])), True)
+
+    def count(self):  # count()
+        raise_type_error_if_merited("max_or_null()", self.variable, list, tuple, type(np.array([])))
+        return PyKot(len([x for x in self.variable]), True)
+
+    # mutable_list methods
+    def add(self, element):
+        if not type_compliance(self.variable, list):
+            raise TypeError("Can only use add() on PyKot(MutableList)")
+        self.variable.append(element)
+        return PyKot(self.variable, True)
+
+    def add_all(self, *args):
+        raise_type_error_if_merited("add_all(element) or add_all(element, ..., element)", self.variable, list)
+        self.variable += [arg for arg in args]
+        return PyKot(self.variable, True)
+
+    # int methods
+
+    # map methods
+    def keys(self):  # keys()
+        if not type_compliance(self.variable, dict):
+            raise TypeError("Can only use keys() on PyKot(dict)")
+        return self.variable.keys()
+
+    def values(self):  # values()
+        if not type_compliance(self.variable, dict):
+            raise TypeError("Can only use values() on PyKot(dict)")
+        return self.variable.values()
 
     def each_count(self):  # eachCount()
         raise_type_error_if_merited("each_count()", self.variable, dict)
@@ -281,38 +412,10 @@ class PyKot:
                 new_count_map[key] = count_map[key]
         return PyKot(new_count_map, True)
 
-    def size(self):  # .size
-        raise_type_error_if_merited("size()", self.variable, list, tuple, type(np.array([])))
-        return len(self.variable)
-
-    # mutable_list methods
-    def add(self, element):
-        if not type_compliance(self.variable, list):
-            raise TypeError("Can only use add() on PyKot(MutableList)")
-        return PyKot(self.variable.append(element), True)
-
-    def add_all(self, *args):
-        raise_type_error_if_merited("add_all(element) or add_all(element, ..., element)", self.variable, list)
-        self.variable += [arg for arg in args]
-        return PyKot(self.variable, True)
-
-    # int methods
-
-    # map methods
-    def keys(self):
-        if not type_compliance(self.variable, dict):
-            raise TypeError("Can only use keys() on PyKot(dict)")
-        return self.variable.keys()
-
-    def values(self):
-        if not type_compliance(self.variable, dict):
-            raise TypeError("Can only use values() on PyKot(dict)")
-        return self.variable.values()
-
-    # ------------------------------------------------------------------------------------------------------------------
-    def for_each(self):
+    def aggregate(self):
         pass
 
+    # ------------------------------------------------------------------------------------------------------------------
     def set(self, index, value):  # .set(index, value)
         raise_type_error_if_merited("set(index, value)", self.variable, list, type(np.array([])))
         if isinstance(self.variable, type(np.array([]))):
@@ -342,6 +445,9 @@ class PyKot:
                 if predicate != x:
                     return False
             return True
+        predicate = predicate.in_line_function
+        if type_compliance(predicate, type(lambda y: y)):
+            return True if len(list(filter(predicate, self.variable))) == len(self.variable) else False
         return False
 
     def as_sequence(self):  # .asSequence()
@@ -389,8 +495,70 @@ class PyKot:
         raise_type_error_if_merited("sub_list(index, index)", self.variable, list, tuple)
         return PyKot(self.variable[from_index:to_index], True)
 
+    def map(self, lambda_function):
+        lambda_function = lambda_function.in_line_function
+        return PyKot([lambda_function(x) for x in self.variable], True)
+
+    def assert_equals(self, other):
+        if type_compliance(self, type(other)):
+            if self != other:
+                raise AssertionFailedError("Equals assertion failed.")
+        if self.variable != other:
+            raise AssertionFailedError("Equals assertion failed.")
+
+    def assert_false(self):
+        if self.variable:
+            raise AssertionFailedError("False assertion failed.")
+
+    def assert_true(self):
+        if not self.variable:
+            raise AssertionFailedError("True assertion failed.")
+
+    def assert_not_null(self):
+        if self.variable is None:
+            raise AssertionFailedError("Not Null assertion failed.")
+
+    def assert_null(self):
+        if self.variable is not None:
+            raise AssertionFailedError("Null assertion failed.")
+
+    def assert_not_same(self, other):
+        if self == other:
+            raise AssertionFailedError("Not Same assertion failed.")
+
+    def assert_same(self, other):
+        if self != other:
+            raise AssertionFailedError("Same assertion failed.")
+
+    def take_if(self, lambda_function):
+        if lambda_function.in_line_function(self.variable):
+            return PyKot(self.variable, True)
+        return PyKot(None, True)
+
+    def take_unless(self, lambda_function):
+        if lambda_function.in_line_function(self.variable):
+            return PyKot(None, True)
+        return PyKot(self.variable, True)
+
+    def index_of(self, target):
+        type_compliance(self.variable, str, list, tuple, type(np.array([])))
+        if isinstance(self.variable, str):
+            return self.variable.find(target)
+        if target in self.variable:
+            return [unpack_array(x) for x in self.variable].index(target)
+        return -1
+
+    # class methods
+    def apply(self, *assignments):
+        for assignment in assignments:
+            setattr(self, assignment[0], assignment[1])
+        return self
+
 
 def println(string):
+    if type_compliance(string, type(it())):
+        string = string.in_line_function
+        return lambda x: print(string(x))
     print(string)
 
 
@@ -502,26 +670,38 @@ class It:
     def __init__(self, in_line_function):
         self.in_line_function = in_line_function
 
-    def __add__(self, additive):
-        return lambda x: self.in_line_function(x) + additive
+    def __add__(self, other):
+        return It(lambda x: self.in_line_function(x) + other)
+
+    def __sub__(self, other):
+        return It(lambda x: self.in_line_function(x) - other)
+
+    def __mul__(self, other):
+        return It(lambda x: self.in_line_function(x) * other)
+
+    def __truediv__(self, other):
+        return It(lambda x: self.in_line_function(x) / other)
 
     def __lt__(self, comparison):
-        return lambda x: self.in_line_function(x) < comparison
+        return It(lambda x: self.in_line_function(x) < comparison)
 
     def __le__(self, comparison):
-        return lambda x: self.in_line_function(x) <= comparison
+        return It(lambda x: self.in_line_function(x) <= comparison)
 
     def __eq__(self, comparison):
-        return lambda x: self.in_line_function(x) == comparison
+        return It(lambda x: self.in_line_function(x) == comparison)
 
     def __ne__(self, comparison):
-        return lambda x: self.in_line_function(x) != comparison
+        return It(lambda x: self.in_line_function(x) != comparison)
 
     def __gt__(self, comparison):
-        return lambda x: self.in_line_function(x) > comparison
+        return It(lambda x: self.in_line_function(x) > comparison)
 
     def __ge__(self, comparison):
-        return lambda x: self.in_line_function(x) >= comparison
+        return It(lambda x: self.in_line_function(x) >= comparison)
+
+    def __mod__(self, modulo):
+        return It(lambda x: self.in_line_function(x) % modulo)
 
     def contains(self, string):
         return It(lambda x:
@@ -553,6 +733,14 @@ class It:
         return It(lambda x:
                   self.in_line_function(x)[0])
 
+    def code(self):
+        return It(lambda x:
+                  ord(self.in_line_function(x)))
+
+    def is_not_empty(self):
+        return It(lambda x:
+                  True if not self.in_line_function(x) else False)
+
 
 def type_compliance(variable, *args):
     """
@@ -578,7 +766,8 @@ def raise_type_error_if_merited(method: str, variable, *args, type_error_message
         tuple: "PyKot(List)",
         dict: "PyKot(Map)",
         range: "PyKot(Range)",
-        type(np.array([])): "PyKot(Array)"
+        type(np.array([])): "PyKot(Array)",
+        type(None): "PyKot(None)"
     }
 
     if not type_compliance(variable, args):
@@ -601,3 +790,21 @@ def raise_type_error_if_merited(method: str, variable, *args, type_error_message
             type_error_message += f"{pykot_exchange[args[-2]]} or {pykot_exchange[args[-1]]}."
 
         raise TypeError(type_error_message)
+
+
+def unpack_array(element):
+    if type_compliance(element, type([x for x in np.array([1])][0])):
+        return int(element)
+    elif type_compliance(element, type([x for x in np.array([1.0])][0])):
+        return float(element)
+    return element
+
+
+class Error(Exception):
+    pass
+
+
+class AssertionFailedError(Error):
+
+    def __init__(self, message):
+        self.message = message

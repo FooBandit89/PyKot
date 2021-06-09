@@ -19,18 +19,13 @@ While single variable inline functions using it() have been maintained, multiple
     solution:   USE Python's lambda syntax: lambda x, y, z: (x + y) > z
                 INSTEAD OF: z, y, z -> (x + y) > z
 
-## Using it() expressions on the right hand side of operators
-The left operand is resolved into a base type prior to evaluating the right side so the interpter attempts to use native operators which results in TypeError.
+## Using it() expressions on the right hand side of arithmetic operator
+The left operand is resolved into a base type prior to evaluating the right side so the interpter attempts to use native operators on 'it' which results in TypeError.
 
     solutions:  (1) Mathametically simply expression.
                 USE (it() ** 2)
                 INSTEAD OF: (it() * it())
                     TypeError: unsupported operand type(s) for *: 'int' and 'It'
-                
-                (2) Move it() express as far left as possible.
-                USE (it() <= 2)
-                INSTEAD OF: (3 > it())
-                    TypeError: '>' not supported between instances of 'int' and 'method'
 
 ## mapOf() "to" syntax
     solution:   use map_of(2, "two", 3, "three") or map_of((2, "two"), (3, "three"))

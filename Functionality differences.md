@@ -1,26 +1,40 @@
-## Can not concatenate Int with String data types using the + operator in println statements.
-    solutions:  (1) Use f-string - f"Yes, it's {PyKot(string).length()} characters long."
-                Instead of: "Yes, it's " + (string.length) + " characters long."
-                
-                (2) type cast Int to String with str() - str(122) + "bottles of beer on the wall."
-                instead of: 122 + "bottles of beer on the wall."
-
 ## String interpolation (String Template Expressions) using $ syntax
-    solution:   Use f-string - f"I am {age} years old."
-                instead of: "I am $age years old."
+    solution:   USE f-string syntax: f"I am {age} years old."
+                INSTEAD OF: "I am $age years old."
+
+## Cannot concatenate Int with String data types using the + operator in println statements.
+    solutions:  (1) USE f-string syntax: f"Yes, it's {PyKot(string).length()} characters long."
+                INSTEAD OF: "Yes, it's " + (string.length) + " characters long."
+                
+                (2) USE type casting to convert Int to String with str(): str(122) + "bottles of beer on the wall."
+                INSTEAD OF: 122 + "bottles of beer on the wall."
 
 ## Raw strings
-    solution:   Use Python's raw string syntax instead - r'\\_\\"\'
-                instead of: """\\_\\"\"""
+    solution:   USE Python's raw string syntax: r'\\_\\"\'
+                INSTEAD OF: """\\_\\"\"""
+                
+## Multiple variable inline functions using '->' syntax
+While single variable inline functions using it() have been maintained, multiple variable inline functions using '->' haven't.
 
-## multiple split delimiters using split()
-    solutions:  (1) use regex lib, re.split( delimiter1 | delimiter2, input_string)
-                (2) replace() all planned delimiters with a unique tag and split(unique_tag)
-                (3) perform nested splits or sequential splits and aggregate lists
+    solution:   USE Python's lambda syntax: lambda x, y, z: (x + y) > z
+                INSTEAD OF: z, y, z -> (x + y) > z
+
+## Using it() expressions on the right hand side of operators
+The left operand is resolved into a base type prior to evaluating the right side so the interpter attempts to use native operators which results in TypeError.
+
+    solutions:  (1) Mathametically simply expression.
+                USE (it() ** 2)
+                INSTEAD OF: (it() * it())
+                    TypeError: unsupported operand type(s) for *: 'int' and 'It'
+                
+                (2) Move it() express as far left as possible.
+                USE (it() <= 2)
+                INSTEAD OF: (3 > it())
+                    TypeError: '>' not supported between instances of 'int' and 'method'
 
 ## mapOf() "to" syntax
     solution:   use map_of(2, "two", 3, "three") or map_of((2, "two"), (3, "three"))
-                instead of: mapOf(2 to "two", 3 to "three") 
+                INSTEAD OF: mapOf(2 to "two", 3 to "three") 
 
 ## do-while loops (post-test loop)
     solution:      INSTEAD OF                                  USE
@@ -54,7 +68,7 @@
 
 ## Elvis operator syntactical sugar
     solution:   elvis_operator(first_return, second_return)
-                instead of: first_return ?: second_return
+                INSTEAD OF: first_return ?: second_return
                 
 ## Apply syntax for Object assignments
     solution:      INSTEAD OF                                  USE
@@ -65,6 +79,6 @@
 
                 
 ## Functions that are now eager instead of lazy:
-as_sequence(), sequence(), with_index()
+    as_sequence(), sequence(), with_index()
 
-## Functions which act on sequences and strings are identical due to char data type being non-existent in python.
+## Functions/Methods which act on character sequences and strings are identical due to char data type being non-existent in python.

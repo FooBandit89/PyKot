@@ -59,8 +59,8 @@ example_string.split(regex(r'\s')) # returns ['example', 'string']
 # Int examples
 example_int = PyKot(123)
 
-example_int.plus(5) # returns 128
 example_int.to_string() # returns '123'
+example_int.plus(5) # returns 128
 
 # List examples
 example_list = list_of(1, 2, 3)
@@ -72,7 +72,7 @@ example_list.to_mutable_list() # returns [1, 2, 3]
 example_mutable_list = mutable_list_of('123', '234', '345', '222')
 
 example_mutable_list.find_last(it().starts_with('2')) # return '222'
-example_mutable_list.add("111")
+example_mutable_list.add("111")  # returns ['123', '234', '345', '222', '111']
 
 # Array examples
 example_array = array_of(1, 2, 3)

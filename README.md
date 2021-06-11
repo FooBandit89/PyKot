@@ -9,41 +9,65 @@ pip install PyKot
 ```
 
 ## How To Wrap Data By Type
-Data must be wrapped prior to using Kotlin style methods.
+Data must be wrapped prior to using Kotlin style methods and unwrapped if you want the naked data.
 
 ### String
 ```python
-PyKot('Example String')
+# wrapping String
+String = PyKot('Example String')
+
+# unwrapping String
+String.var
 ```
 
 ### Int
 ```python
-PyKot(123)
+# wrapping Int
+Int = PyKot(123)
+
+# unwrapping Int
+Int.var
 ```
 
 ### MutableList
 ```python
-PyKot(['L', 'i', 's', 't'])
-mutable_list_of('L', 'i', 's', 't')
+# wrapping MutableList
+MutableList = PyKot(['L', 'i', 's', 't'])
+MutableList = mutable_list_of('L', 'i', 's', 't')
+
+# unwrapping MutableList
+MutableList.var 
 ```
 
 ### List
 ```python
-PyKot(('L', 'i', 's', 't'))
-list_of('L', 'i', 's', 't')
+# wrapping List
+List = PyKot(('L', 'i', 's', 't'))
+List = list_of('L', 'i', 's', 't')
+
+# unwrapping List
+List.var
 ```
 
 ### Array
 ```python
-PyKot(np.array('A', 'r', 'r', 'a', 'y'))
-array_of('A', 'r', 'r', 'a', 'y')
+# wrapping Array
+Array = PyKot(np.array('A', 'r', 'r', 'a', 'y'))
+Array = array_of('A', 'r', 'r', 'a', 'y')
+
+# unwrapping Array
+Array.var
 ```
 
 ### Map
 ```python
-PyKot({dict_key: dict_value})
-map_of(key, value, key, value)
-map_of((key, value), (key, value))
+# wrapping Map
+Map = PyKot({dict_key: dict_value})
+Map = map_of(key, value, key, value)
+Map = map_of((key, value), (key, value))
+
+# unwrapping Map
+Map.var
 ```
 
 ## Usage
@@ -53,38 +77,38 @@ from PyKot import *
 # String examples
 example_string = PyKot('example string')
 
-example_string.drop_while(it() == 'e').to_string() # returns 'xample string'
-example_string.split(regex(r'\s')) # returns ['example', 'string']
+example_string.drop_while(it() == 'e').to_string().var # returns 'xample string'
+example_string.split(regex(r'\s')).var # returns ['example', 'string']
 
 # Int examples
 example_int = PyKot(123)
 
-example_int.to_string() # returns '123'
-example_int.plus(5) # returns 128
+example_int.to_string().var # returns '123'
+example_int.plus(5).var # returns 128
 
 # List examples
 example_list = list_of(1, 2, 3)
 
-example_list.contains(2) # returns True
-example_list.to_mutable_list() # returns [1, 2, 3]
+example_list.contains(2).var # returns True
+example_list.to_mutable_list().var # returns [1, 2, 3]
 
 # MutableList examples
 example_mutable_list = mutable_list_of('123', '234', '345', '222')
 
-example_mutable_list.find_last(it().starts_with('2')) # return '222'
-example_mutable_list.add("111")  # returns ['123', '234', '345', '222', '111']
+example_mutable_list.find_last(it().starts_with('2')).var # return '222'
+example_mutable_list.add("111").var  # returns ['123', '234', '345', '222', '111']
 
 # Array examples
 example_array = array_of(1, 2, 3)
 
-example_array.all(2) # returns False
-example_array.to_mutable_list() # returns [1, 2, 3]
+example_array.all(2).var # returns False
+example_array.to_mutable_list().var # returns [1, 2, 3]
 
 # Map examples
 example_map = map_of((1, '1'), (2, '2'), (3, '3'))
 
-example_map.contains(2) # return True
-println(example_map) # {1: '1', 2: '2', 3: '3'}
+example_map.contains(2).var # return True
+println(example_map).var # {1: '1', 2: '2', 3: '3'}
 ```
 
 ## Contributing

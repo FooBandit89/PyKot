@@ -34,7 +34,7 @@ While single variable inline functions using it() have been maintained, multiple
 ## Using it() expressions on the right hand side of arithmetic operator
 The left operand is resolved into a base type prior to evaluating the right side so the interpter attempts to use native operators on 'it' which results in TypeError.
 
-    solutions:  (1) Mathametically simply expression.
+    solutions:  Mathametically simply expression.
                 USE (it() ** 2)
                 INSTEAD OF: (it() * it())
                     TypeError: unsupported operand type(s) for *: 'int' and 'It'

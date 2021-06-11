@@ -1,4 +1,4 @@
-# - PyKot - Alpha v0.04
+# - PyKot - Alpha v0.05
 Pykot is a Kotlin style syntax wrapper for Python.
 
 ## Installing PyKot (coming soon)

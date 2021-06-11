@@ -24,10 +24,10 @@ While single variable inline functions using it() have been maintained, multiple
     solution:   USE: x if condition else y
                 INSTEAD OF: if (condition) x else y
                 
-    example:    USE: grouped_map.aggregate( lambda key, accumulator, element, first: 
+    example:    USE: dict.grouping_by(it expression).aggregate( lambda key, accumulator, element, first: 
                 StringBuilder().append(key).append(":").append(element) if first else accumulator.append("-").append(element))
                 
-                INSTEAD OF: grouped_map.aggregate( key, accumulator, element, first ->
+                INSTEAD OF: Map.groupingBy(it expression).aggregate( key, accumulator, element, first ->
                 if (frist) StringBuilder().append(key).append(":").append(element) else accumulator.append("-").append(element))
     
 

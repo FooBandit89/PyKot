@@ -19,6 +19,18 @@ While single variable inline functions using it() have been maintained, multiple
     solution:   USE Python's lambda syntax: lambda x, y, z: (x + y) > z
                 INSTEAD OF: z, y, z -> (x + y) > z
 
+## if/else operation order for in-method use must use python syntax
+    
+    solution:   USE: x if condition else y
+                INSTEAD OF: if (condition) x else y
+                
+    example:    USE: grouped_map.aggregate( lambda key, accumulator, element, first: 
+                StringBuilder().append(key).append(":").append(element) if first else accumulator.append("-").append(element))
+                
+                INSTEAD OF: grouped_map.aggregate( key, accumulator, element, first ->
+                if (frist) StringBuilder().append(key).append(":").append(element) else accumulator.append("-").append(element))
+    
+
 ## Using it() expressions on the right hand side of arithmetic operator
 The left operand is resolved into a base type prior to evaluating the right side so the interpter attempts to use native operators on 'it' which results in TypeError.
 
@@ -73,7 +85,7 @@ The left operand is resolved into a base type prior to evaluating the right side
                 }                                       )
 
                 
-## Functions that are now eager instead of lazy:
-    as_sequence(), sequence(), with_index()
+## All functions and methods are now eager instead of lazy:
+    examples: as_sequence(), sequence(), with_index()
 
 ## Functions/Methods which act on character sequences and strings are identical due to char data type being non-existent in python.

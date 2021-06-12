@@ -59,8 +59,7 @@ on 'it' which results in TypeError.
     solution:   use map_of(2, "two", 3, "three") or map_of((2, "two"), (3, "three"))
                 INSTEAD OF: mapOf(2 to "two", 3 to "three")
                 
-## Kotlin print() is not maintained. If you want to print multiple messages without a new line, they must all be included as 
-## arguments in println()
+## Kotlin print() is not maintained. If you want to print multiple messages without a new line, they must all be included as arguments in println()
     If you intend on slowly adding messages onto the same print line, it's recommended you save each portion of the print line 
     to a variables and call them all at once. 
     

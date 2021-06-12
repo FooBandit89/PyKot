@@ -8,7 +8,7 @@ Use the package manager [pip](https://pip.pypa.io/en/stable/) to install PyKot.
 pip install PyKot
 ```
 
-## How To Wrap Data By Type
+## How to wrap and unwrap data by Type
 Data must be wrapped prior to using Kotlin style methods and unwrapped if you want the naked data.
 
 ### String

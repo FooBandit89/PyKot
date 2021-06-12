@@ -18,8 +18,22 @@ While single variable inline functions using it() have been maintained, multiple
 
     solution:   USE Python's lambda syntax: lambda x, y, z: (x + y) > z
                 INSTEAD OF: z, y, z -> (x + y) > z
+                
+## Use of {curly brackets} during method call are replaced with (round brackets).
+    Additionally, if a method uses {curly brakets} after a method call in order to pass a predicate, lambda or it expression, the content of the {curly brackets} should instead be included as an argument in the method call. 
+    
+### Example: apply syntax for Object assignments
+    solution:      INSTEAD OF                                  USE
+                Object.apply {                          Object.apply(
+                name = 'John'                           ('name', 'John')
+                age = 30                                ('age', 30)
+                }                                       )
+ 
+### Example: fold syntax for iterable reduction
+    solution:   USE: list.fold(0, lambda summation, element: summation + element * 2)
+                INSTEAD OF: List.fold(0) { summation, element -> summation + element * 2 }
 
-## if/else operation order for in-method use must use python syntax
+## if/else operation order for in-method use must be python syntax compliant
     
     solution:   USE: x if condition else y
                 INSTEAD OF: if (condition) x else y
@@ -74,17 +88,9 @@ The left operand is resolved into a base type prior to evaluating the right side
                 }
 
 ## Elvis operator syntactical sugar
-    solution:   elvis_operator(first_return, second_return)
+    solution:   USE: elvis_operator(first_return, second_return)
                 INSTEAD OF: first_return ?: second_return
-                
-## Apply syntax for Object assignments
-    solution:      INSTEAD OF                                  USE
-                Object.apply {                          Object.apply(
-                name = 'John'                           ('name', 'John')
-                age = 30                                ('age', 30)
-                }                                       )
-
-                
+           
 ## All functions and methods are now eager instead of lazy:
     examples: as_sequence(), sequence(), with_index()
 

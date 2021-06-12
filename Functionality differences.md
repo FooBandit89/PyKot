@@ -68,30 +68,48 @@ on 'it' which results in TypeError.
                             print("second message")
                             print("third message")
 
+## is operator for type checks is not possible.
+    solution:   USE: if isinstance(variable, type)
+                INSTEAD OF: if (variable is type)
+                
+## Automatic type casting as a by-product of is operator.
+    subsequently, types can not be automatically cast.
+    
+    solution:       INSTEAD OF                                              USE
+                if (variable is type) {                                 if not isinstance(variable, type):
+                    CODE                                                    variable = type(variable)
+                }                                                           CODE
+                
+                    INSTEAD OF                                              USE
+                if (variable is type && variable.length > 3) {          if not isinstance(variable, type):
+                    CODE                                                    variable = type(variable)
+                }                                                           if variable.length() > 3:
+                                                                                CODE
+                           
 ## do-while loops (post-test loop)
-    solution:      INSTEAD OF                                  USE
-                                                        loop = True
-                do {                                    while loop:
-                    doCode                                  do_code
-                    doCode                                  do_code
-                    doCode                                  do_code
-                 } while (condition)                        if condition:
-                                                                loop = False
+    solution:      INSTEAD OF                                               USE
+                                                                        loop = True
+                do {                                                    while loop:
+                    doCode                                                  do_code
+                    doCode                                                  do_code
+                    doCode                                                  do_code
+                 } while (condition)                                        if condition:
+                                                                                loop = False
 
 ## repeat() loops
-    solution:     INSTEAD OF                                   USE
-                repeat(n) {                             for i in range(n):
-                    repeatedCode                            repeated_code
+    solution:     INSTEAD OF                                                USE
+                repeat(n) {                                             for i in range(n):
+                    repeatedCode                                            repeated_code
                 }
 
 ## when/when else statements
-    solution:      INSTEAD OF                                  USE
-                when (variable) {                       if variable == 1:
-                    1 -> {                                  code_if_one
-                        codeIfOne                       elif variable == 2:
-                    }                                       code_if_two
-                    2 -> {                              else:
-                        codeIfTwo                           code_if_else
+    solution:      INSTEAD OF                                               USE
+                when (variable) {                                       if variable == 1:
+                    1 -> {                                                  code_if_one
+                        codeIfOne                                       elif variable == 2:
+                    }                                                       code_if_two
+                    2 -> {                                              else:
+                        codeIfTwo                                           code_if_else
                     }
                 }
                 else {
@@ -106,3 +124,16 @@ on 'it' which results in TypeError.
     examples: as_sequence(), sequence(), with_index()
 
 ## Functions/Methods which act on character sequences and strings are identical due to char data type being non-existent in python.
+
+## Deferred variable assignment is not maintained.
+
+## The distinction between read-only and mutable variables (val and var, respectively) is not maintained.
+
+## Open and Sealed classes are not maintained.
+All subclasses inherit from parent, as long as the parent's __init__ is called.
+
+## Marking references as nullable is not maintained.
+Python's null equivlent is None.
+You can and should still practice null-safety (i.e. if reference == None)
+
+## 'Any' as a data type.

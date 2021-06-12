@@ -71,6 +71,10 @@ on 'it' which results in TypeError.
 ## is operator for type checks is not possible.
     solution:   USE: if isinstance(variable, type)
                 INSTEAD OF: if (variable is type)
+     
+## The use of !in
+    solution:   USE: if not element in collection
+                INSTEAD OF: if (element !in collection)
                 
 ## Automatic type casting as a by-product of is operator.
     subsequently, types can not be automatically cast.
@@ -137,3 +141,4 @@ Python's null equivlent is None.
 You can and should still practice null-safety (i.e. if reference == None)
 
 ## 'Any' as a data type.
+    

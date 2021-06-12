@@ -20,7 +20,8 @@ While single variable inline functions using it() have been maintained, multiple
                 INSTEAD OF: z, y, z -> (x + y) > z
                 
 ## Use of {curly brackets} during method call are replaced with (round brackets).
-    Additionally, if a method uses {curly brakets} after a method call in order to pass a predicate, lambda or it expression, the content of the {curly brackets} should instead be included as an argument in the method call. 
+    Additionally, if a method uses {curly brakets} after a method call in order to pass a predicate, lambda or it expression, 
+    the content of the {curly brackets} should instead be included as an argument in the method call. 
     
 ### Example: apply syntax for Object assignments
     solution:      INSTEAD OF                                  USE

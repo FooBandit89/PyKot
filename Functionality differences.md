@@ -68,13 +68,17 @@ on 'it' which results in TypeError.
                             print("second message")
                             print("third message")
 
+## The use of !in is not maintained.
+    solution:   USE: if not element in collection
+                INSTEAD OF: if (element !in collection)
+                
+## Kotlin syntax using for loops to iterate over Maps
+    solution:   USE: for (k, v) in Map.items()
+                INSTEAD OF: for((k, v) in Map)
+
 ## is operator for type checks is not possible.
     solution:   USE: if isinstance(variable, type)
                 INSTEAD OF: if (variable is type)
-     
-## The use of !in
-    solution:   USE: if not element in collection
-                INSTEAD OF: if (element !in collection)
                 
 ## Automatic type casting as a by-product of is operator.
     subsequently, types can not be automatically cast.

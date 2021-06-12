@@ -60,6 +60,12 @@ elvis_operator(x, y)  # 'No longer None'
 println('Hello PyKot')  # 'Hello PyKot'
 ```
 
+### compare_by()
+```python
+mutable_list_of('two', 'three', 'four', 'one', 'two', 'six').sorted_with(compare_by(it().length()) # [3, 3, 3, 3, 4, 5]
+array_of('two', 'three', 'four', 'one', 'two', 'six').sorted_with(compare_by(it().length(), it() * 3 - 12)) # [-3, -3, -3, -3, 0, 3]
+```
+
 ## PyKot Methods (Coming Soon)
 
 

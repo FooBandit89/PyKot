@@ -47,7 +47,8 @@ While single variable inline functions using it() have been maintained, multiple
     
 
 ## Using it() expressions on the right hand side of arithmetic operator
-The left operand is resolved into a base type prior to evaluating the right side so the interpter attempts to use native operators on 'it' which results in TypeError.
+The left operand is resolved into a base type prior to evaluating the right side so the interpter attempts to use native operators 
+on 'it' which results in TypeError.
 
     solutions:  Mathametically simply expression.
                 USE (it() ** 2)
@@ -56,7 +57,17 @@ The left operand is resolved into a base type prior to evaluating the right side
 
 ## mapOf() "to" syntax
     solution:   use map_of(2, "two", 3, "three") or map_of((2, "two"), (3, "three"))
-                INSTEAD OF: mapOf(2 to "two", 3 to "three") 
+                INSTEAD OF: mapOf(2 to "two", 3 to "three")
+                
+## Kotlin print() is not maintained. If you want to print multiple messages without a new line, they must all be included as 
+## arguments in println()
+    If you intend on slowly adding messages onto the same print line, it's recommended you save each portion of the print line 
+    to a variables and call them all at once. 
+    
+    solution:   USE: println("first message", "second message", "third message")
+                INSTEAD OF: print("first message)
+                            print("second message")
+                            print("third message")
 
 ## do-while loops (post-test loop)
     solution:      INSTEAD OF                                  USE
